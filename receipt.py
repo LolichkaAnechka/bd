@@ -3,12 +3,14 @@ class Search:
     __slots__ = ['__request', '__tags']
 
 
-    def __init__(self, request: str, tags: list) -> None:
-        self.request = request
-        self.tags = tags
+    def __init__(self) -> None:
+        self.request = ''
+        self.tags = list()
 
     def __str__(self) -> str:
         return f'{self.__request}, {self.__tags}'
+
+    
 
     @property
     def request(self):
@@ -32,8 +34,7 @@ class Search:
 class Instruction:
     __slots__ = ['__receipt_id', '__instruction_pos', '__instruction']
 
-    def __init__(self, rec_id = 0, instr_pos = 1, instr = "aboba") -> None:
-        self.receipt_id = rec_id
+    def __init__(self, instr_pos = 1, instr = "aboba") -> None:
         self.instruction_pos = instr_pos
         self.instruction = instr
 
@@ -69,8 +70,7 @@ class Instruction:
 class Ingredient:
     __slots__ = ['__receipt_id', '__ingredient_pos', '__unit', '__quantity', '__ingredient']
 
-    def __init__(self, rec_id = 0, ingr_pos = 1, quantity = 1,  ingr = "aboba", unit = 'gramm') -> None:
-        self.receipt_id = rec_id
+    def __init__(self, ingr_pos = 1, quantity = 1,  ingr = "aboba", unit = 'gramm') -> None:
         self.ingredient_pos = ingr_pos
         self.unit = unit
         self.quantity = quantity
@@ -126,20 +126,34 @@ class Ingredient:
 
 
 class Recipe():
-    __slots__ = ['__id', '__title', '__description', '__image', '__creation_date', '__ingredients', '__instructions', '__user_id']
+    __slots__ = ['__id', '__title', '__description', '__image', '__tags', '__ingredients', '__instructions', '__user_id']
     
-    def __init__ (self):
-        self.__id = 0
-        self.title = ''
-        self.description = ''
-        self.image = ''
-        self.__creation_date = ''
-        self.ingredients = {}
-        self.instructions = []
-        self.user_id = 0
+    def __init__ (self, dict_, id):
+        self.__id = id
+        self.title = dict_['title']
+        self.description =  dict_['description']
+        self.image = dict_['image']
+        self.tags = dict_['tags']
+        self.ingredients = dict_['ingredients']
+        self.instructions = dict_['instructions']
+        self.user_id = dict_['user_id']
+
+    def add_instruction(self, instruction):
+        self.instructions.append(Instruction(self.id, len(self.instructions + 1), instruction))
+
+    def add_ingredient(self, ingredient, unit):
+        self.ingredients.append(Ingredient(self.id, len(self.ingredients + 1), ingredient, unit))
 
     def __str__(self) -> str:
         return f"{self.id}, {self.title}, {self.description}, {self.ingredients}, {self.instructions}"
+
+    @property
+    def tags(self):
+        return self.__tags
+
+    @tags.setter
+    def tags (self, value):
+        self.__tags = value
 
     @property
     def id(self):
@@ -192,3 +206,17 @@ class Recipe():
     @user_id.setter
     def user_id (self, value):
         self.__user_id = value
+
+class Tag:
+    __slots__ = ['__tag']
+
+    def __init__(self, tag) -> None:
+        self.tag = tag
+
+    @property
+    def tag(self):
+        return self.__tag
+
+    @tag.setter
+    def tag (self, value):
+        self.__tag = value

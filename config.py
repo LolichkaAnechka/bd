@@ -1,0 +1,4 @@
+import os
+
+PATH = os.getcwd()
+BOT_TOKEN = '5029068974:AAGv4FWwM_cZIs6gYUYk3DxDz3cLUG6rR4I'
